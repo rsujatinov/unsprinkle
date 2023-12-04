@@ -2,18 +2,28 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 const PhotoGridItem = ({ id, src, alt, tags }) => {
-  return (
-    <article>
-      <Anchor href={`/photos/${id}`}>
-        <Image src={src} />
-      </Anchor>
-      <Tags>
-        {tags.map((tag) => (
-          <Tag key={tag}>{tag}</Tag>
-        ))}
-      </Tags>
-    </article>
-  );
+    return (
+        <article>
+            <Anchor href={`/photos/${id}`}>
+                <picture>
+                    <source
+                        srcSet={`${ext(src, '.avif')}, ${ext(src, '@2x.avif')} 2x, ${ext(src, '@3x.avif')} 3x`}
+                        type="image/avif" />
+
+                    <source srcSet={`/images/hero-img.jpg, ${ext(src, '@2x.jpg')} 2x, ${ext(src, '@3x.jpg')} 3x`}
+                        type="image/jpeg" />
+
+                    <Image src={src} alt={alt} />
+                </picture>
+
+            </Anchor>
+            <Tags>
+                {tags.map((tag) => (
+                    <Tag key={tag}>{tag}</Tag>
+                ))}
+            </Tags>
+        </article>
+    );
 };
 
 const Anchor = styled.a`
@@ -28,11 +38,12 @@ const Image = styled.img`
   height: 300px;
   border-radius: 2px;
   margin-bottom: 8px;
+  object-fit: cover;
 `;
 
 const Tags = styled.ul`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
 `;
 
@@ -42,6 +53,19 @@ const Tag = styled.li`
   font-size: 0.875rem;
   font-weight: 475;
   color: var(--color-gray-800);
+  flex-shrink: 0;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  &:last-of-type {
+    flex-shrink: 1;
+  }
 `;
+
+function ext(src, newExt) {
+    return src.replace(".jpg", newExt);
+}
 
 export default PhotoGridItem;

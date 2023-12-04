@@ -2,12 +2,22 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 const Hero = () => {
-  return (
-    <Wrapper>
-      <HeroImage src="/images/hero-img.jpg" />
-      <Swoop src="/swoop.svg" />
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <picture>
+                <source
+                    srcSet='/images/hero-img.avif, /images/hero-img@2x.avif 2x, /images/hero-img@3x.avif 3x'
+                    type="image/avif" />
+
+                <source srcSet='/images/hero-img.jpg, /images/hero-img@2x.jpg 2x, /images/hero-img@3x.jpg 3x'
+                    type="image/jpeg" />
+
+                <HeroImage src="/images/hero-img.jpg" alt='hero image of a cat' />
+            </picture>
+
+            <Swoop src="/swoop.svg" alt='' />
+        </Wrapper>
+    );
 };
 
 const Wrapper = styled.section`
